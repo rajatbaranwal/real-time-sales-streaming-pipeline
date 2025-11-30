@@ -1,0 +1,163 @@
+📘 Real-Time Sales Data Pipeline using Kafka, PostgreSQL & Python
+📌 Project Overview
+
+This project demonstrates a complete real-time data engineering pipeline built using:
+
+Apache Kafka → real-time message streaming
+
+Python Producer → generates continuous sales data
+
+Python Consumer → consumes data & stores into database
+
+PostgreSQL → structured data storage
+
+Pandas + Matplotlib → analytics and visualization
+
+This pipeline simulates real-world streaming systems used in companies like:
+Netflix, Uber, Amazon, Flipkart, Swiggy, Zomato, BigBasket, Paytm, etc.
+
+🚀 Architecture
+
+     ┌──────────────────┐       ┌──────────────────┐
+     │  Python Producer │ ----> │     Kafka Topic   │
+     └──────────────────┘       └──────────────────┘
+                                       │
+                                       ▼
+     ┌──────────────────┐       ┌──────────────────┐
+     │ Python Consumer  │ ----> │    PostgreSQL     │
+     └──────────────────┘       └──────────────────┘
+                                       │
+                                       ▼
+                 ┌────────────────────────────────────────┐
+                 │      Analytics (Pandas + Matplotlib)    │
+                 └────────────────────────────────────────┘
+🧩 Technologies Used
+
+| Component            | Technology            |
+| -------------------- | --------------------- |
+| Real-Time Streaming  | **Apache Kafka**      |
+| Data Generation      | Python (Faker)        |
+| Data Ingestion       | Python Kafka Consumer |
+| Storage              | PostgreSQL            |
+| Visualization        | Pandas, Matplotlib    |
+| Programming Language | Python 3.13           |
+
+
+📂 Project Structure
+
+sales_kafka_project/
+│── sales_producer.py
+│── sales_consumer.py
+│── sales_dashboard.py
+│── README.md
+
+1. Python Producer (Real-Time Data Generation)
+
+sales_producer.py generates streaming data:
+
+Product name
+
+Quantity
+
+Price
+
+Timestamp
+
+Then sends it to Kafka topic: sales-topic
+
+2. Python Consumer (Ingestion Layer)
+
+sales_consumer.py listens to sales-topic and inserts data into PostgreSQL table:
+
+CREATE TABLE sales_data (
+    sale_id SERIAL PRIMARY KEY,
+    product_name VARCHAR(50),
+    quantity INT,
+    price NUMERIC(10,2),
+    timestamp TIMESTAMP
+);
+
+3. PostgreSQL Storage
+
+Data is inserted into:
+
+Database → salesdb
+
+Table → sales_data
+
+
+4. Analytics Dashboard
+
+sales_dashboard.py performs:
+
+Daily Revenue Trend
+
+Top Selling Products
+
+Daily Quantity Sold
+
+Price Distribution
+
+Using Pandas + Matplotlib.
+
+
+🛠 How to Run the Project
+✔ Step 1 — Start Zookeeper
+
+cd ~/Kafka
+bin/zookeeper-server-start.sh config/zookeeper.properties
+
+
+✔ Step 2 — Start Kafka Broker
+cd ~/Kafka
+bin/kafka-server-start.sh config/server.properties
+
+✔ Step 3 — Create Topic
+bin/kafka-topics.sh --create --topic sales-topic --bootstrap-server localhost:9092
+
+✔ Step 4 — Run Producer
+cd ~/sales_kafka_project
+python3 sales_producer.py
+
+
+You’ll see:
+
+Sent: {'product_name': 'Mobile', 'quantity': 3, ...}
+
+✔ Step 5 — Run Consumer
+cd ~/sales_kafka_project
+python3 sales_consumer.py
+
+
+You’ll see:
+
+Inserted: {'product_name': 'Mobile', 'quantity': 3, ...}
+
+✔ Step 6 — Run Dashboard
+python3 sales_dashboard.py
+
+
+Shows:
+
+Revenue graph
+
+Quantity trend
+
+Product bar chart
+
+Price distribution
+
+
+
+
+
+Complete Flow (Very Simple Explanation)
+Python Producer (generates fake sales)
+        ↓
+Kafka Topic (real-time stream)
+        ↓
+Kafka Consumer (Python)
+        ↓
+PostgreSQL (database)
+        ↓
+Pandas + Matplotlib Dashboard
